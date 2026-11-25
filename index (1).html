@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#7957B5">
+  <meta name="description" content="Projeto Secreto — Uma missão inesperada. Um pequeno jogo de mistério feito com carinho.">
+  <title>Projeto Secreto — Uma missão inesperada</title>
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Fontes (com alternativas de sistema definidas no CSS caso não carreguem) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body data-screen="intro">
+
+  <!-- Biblioteca de ícones ilustrados (reutilizados com <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-star" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/>
+      </symbol>
+      <symbol id="i-flower" viewBox="0 0 32 32">
+        <g fill="#F58FA8">
+          <circle cx="16" cy="8" r="6"/><circle cx="24.5" cy="14" r="6"/>
+          <circle cx="21.5" cy="24" r="6"/><circle cx="10.5" cy="24" r="6"/><circle cx="7.5" cy="14" r="6"/>
+        </g>
+        <circle cx="16" cy="16.5" r="5" fill="#FFCB69"/>
+      </symbol>
+      <symbol id="i-key" viewBox="0 0 64 64">
+        <g stroke="#443A50" stroke-width="3" stroke-linejoin="round" fill="#FFCB69">
+          <circle cx="20" cy="32" r="13"/>
+          <rect x="31" y="29" width="30" height="7" rx="3"/>
+          <rect x="47" y="36" width="6" height="10" rx="1"/>
+          <rect x="56" y="36" width="5" height="7" rx="1"/>
+        </g>
+        <circle cx="20" cy="32" r="4.5" fill="#FFF9EF" stroke="#443A50" stroke-width="3"/>
+      </symbol>
+      <symbol id="i-lupa" viewBox="0 0 64 64">
+        <line x1="40" y1="40" x2="58" y2="58" stroke="#443A50" stroke-width="8" stroke-linecap="round"/>
+        <line x1="40" y1="40" x2="57" y2="57" stroke="#F58FA8" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="26" cy="26" r="18" fill="#DDF3EA" stroke="#443A50" stroke-width="4"/>
+        <circle cx="26" cy="26" r="18" fill="none" stroke="#7957B5" stroke-width="2" stroke-dasharray="3 5" transform="rotate(20 26 26)"/>
+        <path d="M15 24a11 11 0 0 1 8-9" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="i-envelope" viewBox="0 0 64 48">
+        <rect x="3" y="3" width="58" height="42" rx="7" fill="#fff" stroke="#443A50" stroke-width="3"/>
+        <path d="M5 8l27 20L59 8" fill="#F58FA8" stroke="#443A50" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="32" cy="28" r="5" fill="#FFCB69" stroke="#443A50" stroke-width="2.5"/>
+      </symbol>
+      <symbol id="i-book" viewBox="0 0 64 48">
+        <path d="M32 9C24 4 12 4 3 8v34c9-4 21-4 29 1z" fill="#8CCEB1" stroke="#443A50" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M32 9c8-5 20-5 29-1v34c-9-4-21-4-29 1z" fill="#FFCB69" stroke="#443A50" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M10 16c6-2 13-2 17 0M10 24c6-2 13-2 17 0M37 16c4-2 11-2 17 0M37 24c4-2 11-2 17 0" fill="none" stroke="#443A50" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="i-mountain" viewBox="0 0 64 48">
+        <path d="M2 44L24 8l12 20 8-10 18 26z" fill="#8CCEB1" stroke="#443A50" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M24 8l-7 11 7-3 5 4z" fill="#fff" stroke="#443A50" stroke-width="2" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-river" viewBox="0 0 64 48">
+        <rect x="3" y="6" width="58" height="36" rx="10" fill="#DDF3EA" stroke="#443A50" stroke-width="3"/>
+        <path d="M10 20c6-6 10 6 16 0s10 6 16 0 8 4 12 0M10 32c6-6 10 6 16 0s10 6 16 0 8 4 12 0" fill="none" stroke="#7957B5" stroke-width="3" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Camadas decorativas -->
+  <div class="stars" id="stars" aria-hidden="true"></div>
+  <div class="fx" id="fx" aria-hidden="true"></div>
+
+  <noscript>
+    <p class="noscript">Este jogo precisa de JavaScript para funcionar. Ative o JavaScript no navegador e recarregue a página. 🙂</p>
+  </noscript>
+
+  <div class="app">
+
+    <!-- Barra superior: progresso, fase atual, música, som e reiniciar -->
+    <header class="topbar" id="topbar">
+      <div class="topbar-row">
+        <button type="button" class="chip-op tb-hide-intro" id="chip-op" aria-label="Número do projeto: 023">Nº 023</button>
+        <div class="topbar-actions">
+          <button type="button" class="icon-btn" id="btn-music" aria-pressed="false" aria-label="Ligar música de fundo" title="Música de fundo">
+            <span class="icon-btn-emoji" aria-hidden="true">🎵</span>
+          </button>
+          <button type="button" class="icon-btn" id="btn-sound" aria-pressed="false" aria-label="Ativar efeitos sonoros" title="Efeitos sonoros">
+            <span class="icon-btn-emoji" aria-hidden="true">🔇</span>
+          </button>
+          <button type="button" class="icon-btn tb-hide-intro" id="btn-restart" aria-label="Reiniciar jogo" title="Reiniciar jogo">
+            <span class="icon-btn-emoji" aria-hidden="true">↻</span>
+          </button>
+        </div>
+      </div>
+      <div class="progress tb-hide-intro" id="progress">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <ol class="progress-dots" id="progress-dots">
+          <li><button type="button" class="dot" data-phase="1" aria-label="Fase 1">1</button></li>
+          <li><button type="button" class="dot" data-phase="2" aria-label="Fase 2">2</button></li>
+          <li><button type="button" class="dot" data-phase="3" aria-label="Fase 3">3</button></li>
+          <li><button type="button" class="dot" data-phase="4" aria-label="Fase 4">4</button></li>
+          <li><button type="button" class="dot" data-phase="5" aria-label="Fase 5">5</button></li>
+        </ol>
+      </div>
+      <p class="phase-label tb-hide-intro" id="phase-label" aria-live="polite"></p>
+    </header>
+
+    <main class="stage" id="stage">
+
+      <!-- ============ TELA INICIAL ============ -->
+      <section class="screen intro" id="screen-intro" aria-labelledby="intro-title">
+        <p class="op-badge">Projeto nº 023</p>
+        <h1 class="logo" id="intro-title" tabindex="-1"><button type="button" class="logo-btn" id="logo">PROJETO <span>SECRETO</span></button></h1>
+        <p class="subtitle">Uma missão inesperada.</p>
+
+        <div class="envelope-art floaty" aria-hidden="true">
+          <svg viewBox="0 0 220 170" role="img" focusable="false">
+            <ellipse cx="110" cy="158" rx="78" ry="8" fill="#443A50" opacity=".12"/>
+            <rect x="48" y="26" width="124" height="82" rx="8" fill="#fff" stroke="#443A50" stroke-width="4"/>
+            <path d="M64 48h92M64 64h70M64 80h84" stroke="#C9B8E8" stroke-width="5" stroke-linecap="round"/>
+            <rect x="20" y="52" width="180" height="104" rx="14" fill="#FFCB69" stroke="#443A50" stroke-width="4"/>
+            <path d="M24 60l86 56 86-56" fill="#F58FA8" stroke="#443A50" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+            <path d="M24 152l60-48M196 152l-60-48" stroke="#443A50" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="110" cy="114" r="17" fill="#7957B5" stroke="#443A50" stroke-width="4"/>
+            <text x="110" y="122" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="22" fill="#fff">?</text>
+            <use href="#i-star" x="4" y="14" width="26" height="26" style="color:#FFCB69"/>
+            <use href="#i-star" x="186" y="6" width="22" height="22" style="color:#F58FA8"/>
+            <use href="#i-flower" x="176" y="112" width="30" height="30"/>
+          </svg>
+        </div>
+
+        <div class="cat-guide" data-cat="orange">
+          <button type="button" class="cat-slot" aria-label="Fazer carinho no gato Bigode"></button>
+          <p class="bubble" aria-live="polite">Miau! Eu sou o <strong>Bigode</strong>, gato detetive. Vou te ajudar nessa missão! 🐾</p>
+        </div>
+
+        <div class="paper intro-text">
+          <p><strong>Olá, Bia!</strong></p>
+          <p>Parece que você encontrou algo que não deveria estar aqui...</p>
+          <p>Existe um pequeno mistério esperando para ser resolvido.</p>
+          <p>Algumas pistas foram deixadas pelo caminho, mas somente uma investigadora poderá descobrir o verdadeiro objetivo desta missão.</p>
+          <p class="ask">Preparada?</p>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-block pulse" id="btn-start">INICIAR INVESTIGAÇÃO</button>
+      </section>
+
+      <!-- ============ FASE 01 — O CHAMADO ============ -->
+      <section class="screen phase" id="screen-1" aria-labelledby="title-1" hidden>
+        <p class="phase-tag">Fase 01 · O Chamado</p>
+
+        <div class="letter-art" aria-hidden="true">
+          <div class="letter-paper"><span></span><span></span><span></span></div>
+          <div class="letter-body"></div>
+          <div class="letter-flap"></div>
+          <div class="letter-seal">✦</div>
+        </div>
+
+        <div class="paper">
+          <h2 id="title-1" tabindex="-1">Primeira pista encontrada!</h2>
+          <p>Toda investigação começa com uma descoberta.</p>
+          <p>Mas antes de continuar, precisamos descobrir uma palavra escondida.</p>
+        </div>
+
+        <div class="cat-guide" data-cat="gray">
+          <button type="button" class="cat-slot" aria-label="Fazer carinho no gato"></button>
+          <p class="bubble" aria-live="polite">É só tocar nas letras, na ordem certa, pra formar a palavra. Eu confio em você! 🐾</p>
+        </div>
+
+        <div class="puzzle-area" id="area-1">
+          <p class="instruction">Toque nas letras para formar a palavra escondida:</p>
+          <p class="easy-hint">🤫 Dica: é aquilo que as pessoas guardam quando dizem “não conta pra ninguém”.</p>
+
+          <div class="slots" id="slots-1" aria-label="Sua resposta"></div>
+          <div class="tiles" id="tiles-1" aria-label="Letras embaralhadas"></div>
+          <div class="row-actions">
+            <button type="button" class="btn btn-ghost" id="clear-1">↺ Limpar letras</button>
+          </div>
+
+          <details class="type-alt" id="details-1">
+            <summary>⌨️ Prefere digitar a resposta?</summary>
+            <form class="answer-form" id="form-1" novalidate>
+              <label class="sr-only" for="input-1">Sua resposta</label>
+              <input class="text-input" id="input-1" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="20" placeholder="Digite a palavra">
+              <button type="submit" class="btn btn-primary">VERIFICAR</button>
+            </form>
+          </details>
+
+          <p class="feedback" id="feedback-1" role="status" aria-live="polite"></p>
+          <div class="hint-box" id="hint-1" aria-live="polite" hidden></div>
+          <button type="button" class="btn btn-ghost btn-hint" data-hint="1">💡 Pedir uma dica</button>
+        </div>
+
+        <div class="success" id="success-1" hidden>
+          <p class="success-msg">Boa! Parece que temos uma investigadora de verdade por aqui.</p>
+          <button type="button" class="btn btn-secondary btn-block" data-goto="2">PRÓXIMA FASE →</button>
+        </div>
+      </section>
+
+      <!-- ============ FASE 02 — O MAPA PERDIDO ============ -->
+      <section class="screen phase" id="screen-2" aria-labelledby="title-2" hidden>
+        <p class="phase-tag">Fase 02 · O Mapa Perdido</p>
+
+        <div class="paper">
+          <h2 id="title-2" tabindex="-1">O Mapa Perdido</h2>
+          <p>Para encontrar a próxima pista, siga o caminho que leva ao lugar onde as histórias começam.</p>
+        </div>
+
+        <div class="cat-guide" data-cat="white">
+          <button type="button" class="cat-slot" aria-label="Fazer carinho no gato"></button>
+          <p class="bubble" aria-live="polite">Hmm, onde as histórias começam? Pensa em páginas e capas... 📖</p>
+        </div>
+
+        <div class="puzzle-area" id="area-2">
+          <p class="instruction">Toque em um caminho, no mapa ou nas opções abaixo:</p>
+
+          <div class="map-wrap">
+            <svg class="treasure-map" id="treasure-map" viewBox="0 0 320 300" role="group" aria-label="Mapa do tesouro com três caminhos">
+              <rect x="4" y="4" width="312" height="292" rx="22" fill="#FBE7BC" stroke="#D9B26F" stroke-width="4"/>
+              <rect x="14" y="14" width="292" height="272" rx="16" fill="none" stroke="#D9B26F" stroke-width="2" stroke-dasharray="4 6"/>
+              <use href="#i-flower" x="22" y="236" width="30" height="30" opacity=".9"/>
+              <use href="#i-star" x="270" y="232" width="24" height="24" style="color:#FFCB69"/>
+              <use href="#i-star" x="24" y="24" width="18" height="18" style="color:#F58FA8"/>
+
+              <path class="map-path" id="path-montanha" d="M160 252 C150 200 96 180 72 108"/>
+              <path class="map-path" id="path-livro" d="M160 252 C172 200 150 150 160 100"/>
+              <path class="map-path" id="path-rio" d="M160 252 C182 208 240 190 254 112"/>
+
+              <g class="map-node" data-path="montanha" tabindex="0" role="button" aria-label="Caminho da Montanha">
+                <circle cx="72" cy="84" r="32" fill="#fff" stroke="#443A50" stroke-width="3"/>
+                <use href="#i-mountain" x="48" y="68" width="48" height="36"/>
+                <text x="72" y="136" text-anchor="middle" class="map-label">MONTANHA</text>
+              </g>
+              <g class="map-node" data-path="livro" tabindex="0" role="button" aria-label="Caminho do Livro">
+                <circle cx="160" cy="74" r="32" fill="#fff" stroke="#443A50" stroke-width="3"/>
+                <use href="#i-book" x="136" y="58" width="48" height="36"/>
+                <text x="160" y="126" text-anchor="middle" class="map-label">LIVRO</text>
+              </g>
+              <g class="map-node" data-path="rio" tabindex="0" role="button" aria-label="Caminho do Rio">
+                <circle cx="254" cy="88" r="32" fill="#fff" stroke="#443A50" stroke-width="3"/>
+                <use href="#i-river" x="230" y="72" width="48" height="36"/>
+                <text x="254" y="140" text-anchor="middle" class="map-label">RIO</text>
+              </g>
+
+              <g class="map-start">
+                <circle cx="160" cy="262" r="16" fill="#7957B5" stroke="#443A50" stroke-width="3"/>
+                <text x="160" y="268" text-anchor="middle" class="map-start-text">VOCÊ</text>
+              </g>
+              <circle class="map-walker" id="map-walker" r="9" cx="160" cy="252" fill="#F58FA8" stroke="#443A50" stroke-width="3" opacity="0"/>
+            </svg>
+          </div>
+
+          <div class="path-list" id="path-list">
+            <button type="button" class="path-card" data-path="montanha">
+              <svg class="path-icon" viewBox="0 0 64 48" aria-hidden="true"><use href="#i-mountain"/></svg>
+              <span class="path-text"><strong>Caminho da Montanha</strong><span>Uma trilha íngreme, com ar fresquinho lá no alto.</span></span>
+            </button>
+            <button type="button" class="path-card" data-path="livro">
+              <svg class="path-icon" viewBox="0 0 64 48" aria-hidden="true"><use href="#i-book"/></svg>
+              <span class="path-text"><strong>Caminho do LIVRO</strong><span>Uma casinha cheia de prateleiras e páginas coloridas.</span></span>
+            </button>
+            <button type="button" class="path-card" data-path="rio">
+              <svg class="path-icon" viewBox="0 0 64 48" aria-hidden="true"><use href="#i-river"/></svg>
+              <span class="path-text"><strong>Caminho do Rio</strong><span>Água corrente, pedrinhas e uns sapos de olho em você.</span></span>
+            </button>
+          </div>
+
+          <p class="feedback" id="feedback-2" role="status" aria-live="polite"></p>
+          <div class="hint-box" id="hint-2" aria-live="polite" hidden></div>
+          <button type="button" class="btn btn-ghost btn-hint" data-hint="2">💡 Pedir uma dica</button>
+        </div>
+
+        <div class="success" id="success-2" hidden>
+          <p class="success-msg"><strong>Segunda pista encontrada!</strong> Entre as páginas do livro, alguém deixou um bilhete: “Procure algo pequeno, de metal, que serve para abrir portas importantes.”</p>
+          <button type="button" class="btn btn-secondary btn-block" data-goto="3">PRÓXIMA FASE →</button>
+        </div>
+      </section>
+
+      <!-- ============ FASE 03 — OS OBJETOS SUSPEITOS ============ -->
+      <section class="screen phase" id="screen-3" aria-labelledby="title-3" hidden>
+        <p class="phase-tag">Fase 03 · Os Objetos Suspeitos</p>
+
+        <div class="paper">
+          <h2 id="title-3" tabindex="-1">Os Objetos Suspeitos</h2>
+          <p>Tem algo estranho nesta mesa. Toque nos objetos para investigar cada um!</p>
+        </div>
+
+        <div class="cat-guide" data-cat="black">
+          <button type="button" class="cat-slot" aria-label="Fazer carinho no gato"></button>
+          <p class="bubble" aria-live="polite">Lembra do bilhete? Algo pequeno, de metal, que abre portas. 🔑</p>
+        </div>
+
+        <div class="puzzle-area" id="area-3">
+          <div class="desk" id="desk">
+            <button type="button" class="obj" data-object="lupa">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#i-lupa"/></svg>
+              <span>Lupa</span>
+            </button>
+            <button type="button" class="obj" data-object="chave">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#i-key"/></svg>
+              <span>Chave</span>
+            </button>
+            <button type="button" class="obj" data-object="envelope">
+              <svg viewBox="0 0 64 48" aria-hidden="true"><use href="#i-envelope"/></svg>
+              <span>Envelope</span>
+            </button>
+          </div>
+
+          <p class="note" id="note-3" role="status" aria-live="polite">Qual desses objetos esconde a próxima pista?</p>
+          <div class="hint-box" id="hint-3" aria-live="polite" hidden></div>
+          <button type="button" class="btn btn-ghost btn-hint" data-hint="3">💡 Pedir uma dica</button>
+        </div>
+
+        <div class="success" id="success-3" hidden>
+          <p class="success-msg"><strong>Encontramos alguma coisa!</strong> Parece que alguém deixou uma chave para abrir algo importante...</p>
+          <button type="button" class="btn btn-secondary btn-block" data-goto="4">PRÓXIMA FASE →</button>
+        </div>
+      </section>
+
+      <!-- ============ FASE 04 — O ÚLTIMO SEGREDO ============ -->
+      <section class="screen phase" id="screen-4" aria-labelledby="title-4" hidden>
+        <p class="phase-tag">Fase 04 · O Último Segredo</p>
+
+        <div class="paper">
+          <h2 id="title-4" tabindex="-1">O Último Segredo</h2>
+          <p>Alguns detalhes passam despercebidos, mas o número deste projeto sempre esteve diante dos seus olhos.</p>
+        </div>
+
+        <div class="cat-guide" data-cat="orange">
+          <button type="button" class="cat-slot" aria-label="Fazer carinho no gato"></button>
+          <p class="bubble" aria-live="polite">Olha lá em cima, no topo da tela! Tem um número piscando... 👆</p>
+        </div>
+
+        <div class="chest-stage" id="chest-stage">
+          <svg class="chest" id="chest" viewBox="0 0 240 200" role="img" aria-label="Um baú misterioso, fechado">
+            <defs>
+              <radialGradient id="glow-grad" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#FFCB69" stop-opacity=".95"/>
+                <stop offset="1" stop-color="#FFCB69" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="120" cy="184" rx="96" ry="9" fill="#443A50" opacity=".14"/>
+            <circle class="chest-glow" cx="120" cy="92" r="84" fill="url(#glow-grad)"/>
+            <rect x="46" y="88" width="148" height="16" rx="5" fill="#2F2245"/>
+            <rect x="38" y="92" width="164" height="86" rx="12" fill="#5C3F96" stroke="#443A50" stroke-width="4"/>
+            <rect x="96" y="92" width="48" height="86" fill="#FFCB69" stroke="#443A50" stroke-width="4"/>
+            <rect x="38" y="150" width="164" height="10" fill="#443A50" opacity=".25"/>
+            <g class="chest-lock">
+              <rect x="104" y="100" width="32" height="34" rx="8" fill="#E0A83F" stroke="#443A50" stroke-width="4"/>
+              <circle cx="120" cy="113" r="5" fill="#443A50"/>
+              <rect x="118" y="113" width="4" height="12" rx="2" fill="#443A50"/>
+            </g>
+            <g class="chest-lid">
+              <path d="M34 94V74C34 40 70 30 120 30s86 10 86 44v20z" fill="#7957B5" stroke="#443A50" stroke-width="4" stroke-linejoin="round"/>
+              <rect x="96" y="30" width="48" height="64" fill="#FFCB69" stroke="#443A50" stroke-width="4"/>
+              <path d="M62 38v56M178 38v56" stroke="#443A50" stroke-width="4" opacity=".35"/>
+              <path d="M52 52c14-8 34-11 54-12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".45"/>
+            </g>
+            <use class="chest-spark s1" href="#i-star" x="16" y="30" width="22" height="22" style="color:#FFCB69"/>
+            <use class="chest-spark s2" href="#i-star" x="204" y="22" width="26" height="26" style="color:#F58FA8"/>
+          </svg>
+        </div>
+
+        <div class="puzzle-area" id="area-4">
+          <div class="clues">
+            <p class="clues-title">📓 Caderno de pistas</p>
+            <ul>
+              <li>Pista 1: a palavra escondida era <strong>SEGREDO</strong>.</li>
+              <li>Pista 2: a história começou no caminho do <strong>LIVRO</strong>.</li>
+              <li>Pista 3: a <strong>chave</strong> abre algo importante.</li>
+              <li>Pista 4: o número do projeto está no <strong>topo da tela</strong>, piscando. 👆</li>
+            </ul>
+          </div>
+
+          <p class="instruction">Qual é o código de três números do baú?</p>
+          <form class="answer-form" id="form-4" novalidate>
+            <label class="sr-only" for="input-4">Código de três números</label>
+            <input class="text-input code-input" id="input-4" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="3" placeholder="000">
+            <button type="submit" class="btn btn-primary">ABRIR BAÚ</button>
+          </form>
+
+          <p class="feedback" id="feedback-4" role="status" aria-live="polite"></p>
+          <div class="hint-box" id="hint-4" aria-live="polite" hidden></div>
+          <button type="button" class="btn btn-ghost btn-hint" data-hint="4">💡 Pedir uma dica</button>
+        </div>
+
+        <div class="success" id="success-4" hidden>
+          <p class="success-msg">
+            <strong>Parabéns!</strong><br>
+            Você encontrou todas as pistas.<br>
+            Mas existe uma última coisa que ainda precisa ser revelada...<br>
+            O verdadeiro objetivo desta missão.
+          </p>
+          <button type="button" class="btn btn-secondary btn-block" data-goto="5">DESCOBRIR →</button>
+        </div>
+      </section>
+
+      <!-- ============ FASE 05 — O VERDADEIRO OBJETIVO ============ -->
+      <section class="screen phase final" id="screen-5" aria-labelledby="title-5" hidden>
+        <p class="phase-tag">Fase 05 · O Verdadeiro Objetivo</p>
+
+        <div class="reveal-stage" id="reveal-stage">
+          <svg class="deco deco-a" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-flower"/></svg>
+          <svg class="deco deco-b" viewBox="0 0 24 24" aria-hidden="true" style="color:#FFCB69"><use href="#i-star"/></svg>
+          <svg class="deco deco-c" viewBox="0 0 24 24" aria-hidden="true" style="color:#F58FA8"><use href="#i-star"/></svg>
+          <svg class="deco deco-d" viewBox="0 0 32 32" aria-hidden="true"><use href="#i-flower"/></svg>
+
+          <div class="final-card">
+            <h2 class="final-title reveal-item" id="title-5" tabindex="-1">INVESTIGAÇÃO CONCLUÍDA!</h2>
+            <p class="reveal-item">Bia, depois de tantas pistas, chegou a hora de revelar o verdadeiro objetivo desta missão.</p>
+            <p class="reveal-item">Na verdade, alguém estava procurando uma maneira diferente de te fazer um convite.</p>
+            <p class="reveal-item"><strong>E esse alguém sou eu. KKKKK.</strong></p>
+            <p class="reveal-item">Então, tenho uma pergunta...</p>
+            <p class="big-question reveal-item">ACEITA SAIR COMIGO?</p>
+            <p class="soft reveal-item">Sem pressão, sem mistério dessa vez. Só a vontade de passar um tempinho juntos.</p>
+          </div>
+
+          <div class="cat-guide reveal-item" data-cat="gray">
+            <button type="button" class="cat-slot" aria-label="Fazer carinho no gato"></button>
+            <p class="bubble" aria-live="polite">Responde no seu tempo, tá? Eu fico aqui de guarda. 🐾</p>
+          </div>
+
+          <div class="final-actions reveal-item">
+            <button type="button" class="btn btn-accept btn-block" id="btn-accept">ACEITO O CONVITE!</button>
+            <button type="button" class="btn btn-secondary btn-block" id="btn-more">QUERO SABER MAIS 👀</button>
+          </div>
+          <p class="skip-hint" id="skip-hint">Toque na tela para pular a animação</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Confirmação de reinício -->
+  <div class="modal" id="modal-restart" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h2 id="modal-title">Reiniciar o jogo?</h2>
+      <p>Todo o seu progresso será apagado e a missão volta para o começo.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="restart-cancel">CANCELAR</button>
+        <button type="button" class="btn btn-primary" id="restart-confirm">SIM, REINICIAR</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scripts (sem build). A ordem importa: cada um usa o que veio antes. -->
+  <script src="whatsapp.js" defer></script>
+  <script src="effects.js" defer></script>
+  <script src="music.js" defer></script>
+  <script src="cats.js" defer></script>
+  <script src="puzzles.js" defer></script>
+  <script src="navigation.js" defer></script>
+  <script src="game.js" defer></script>
+</body>
+</html>

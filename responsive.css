@@ -1,0 +1,74 @@
+/* ==========================================================
+   PROJETO SECRETO — responsive.css
+   O layout base já é mobile-first (style.css).
+   Aqui ficam os ajustes para telas muito pequenas, curtas e para computador.
+   ========================================================== */
+
+/* ---------- Celulares bem pequenos ---------- */
+@media (max-width: 359px) {
+  body { font-size: 1rem; }
+  .screen { padding-left: 14px; padding-right: 14px; }
+  .paper { padding: 14px 14px; }
+  .paper h2 { font-size: 1.35rem; }
+  .btn { padding: 12px 14px; font-size: 1rem; }
+  .code-input { letter-spacing: .35em; }
+  .dot { width: 30px; height: 30px; }
+  .obj { min-height: 100px; font-size: .9rem; }
+  .obj svg { width: 52px; height: 46px; }
+  .final-card { padding: 20px 14px; }
+}
+
+/* ---------- Celulares com tela curta ---------- */
+@media (max-height: 700px) {
+  .envelope-art { width: min(46vw, 180px); }
+  .screen { gap: 12px; }
+  .letter-art { transform: scale(.9); margin-top: 0; }
+}
+
+/* ---------- Celular deitado ---------- */
+@media (orientation: landscape) and (max-height: 520px) {
+  .app { max-width: 640px; }
+  .envelope-art { display: none; }
+  .chest-stage { width: 190px; }
+  .modal { align-items: flex-start; overflow-y: auto; }
+}
+
+/* ---------- Tablets ---------- */
+@media (min-width: 600px) {
+  .app { max-width: 560px; }
+  body { font-size: 1.125rem; }
+  .screen { padding-left: 28px; padding-right: 28px; gap: 20px; }
+  .paper { padding: 22px 26px; }
+  .modal-actions { flex-direction: row; justify-content: flex-end; }
+  .answer-form { flex-direction: row; align-items: stretch; }
+  .answer-form .btn { flex: none; }
+  .final-card { padding: 30px 28px; }
+}
+
+/* ---------- Computador ---------- */
+@media (min-width: 900px) {
+  body { background-attachment: fixed; }
+  .app {
+    max-width: 640px;
+    min-height: calc(100dvh - 48px);
+    margin: 24px auto;
+    background: rgba(255, 249, 239, .85);
+    border: 3px solid var(--text);
+    border-radius: 32px;
+    box-shadow: 0 10px 0 var(--purple), 0 24px 50px rgba(68, 58, 80, .25);
+    overflow: hidden;
+  }
+  .topbar { border-radius: 32px 32px 0 0; }
+  .toast { bottom: 40px; }
+}
+
+/* ---------- Efeitos de passar o mouse (somente onde existe mouse) ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { filter: brightness(1.06); transform: translateY(-2px); }
+  .btn:active { transform: translateY(4px); }
+  .icon-btn:hover, .chip-op:hover { transform: translateY(-2px); }
+  .path-card:hover, .obj:hover { transform: translateY(-3px); }
+  .path-card:active, .obj:active { transform: translateY(3px); }
+  .dot:not(.is-locked):hover { transform: scale(1.12); }
+  .btn-ghost:hover { background: rgba(121, 87, 181, .08); transform: none; }
+}
